@@ -15,7 +15,7 @@ const refs = {
 refs.searchForm.addEventListener('submit', onFormSubmit);
 refs.galleryEl.addEventListener('click', onImageClick);
 refs.loadMoreBtnEl.addEventListener('click', onLoadMore);
-refs.inputEl.addEventListener('input', onInput);
+refs.inputEl.addEventListener('input', onInputClear);
 
 let photosPerPage = 40;
 let pageNum = 1;
@@ -81,6 +81,18 @@ function onLoadMore(event) {
   onFormSubmit(event);
 }
 
+function clearGallery() {
+  refs.galleryEl.innerHTML = '';
+}
+//---
+function onInputClear() {
+  if (refs.inputEl.value == '' || refs.inputEl.value.length == 1) {
+    clearGallery();
+    refs.loadMoreBtnEl.classList.add('visually-hidden');
+    pageNum = 1;
+  }
+}
+
 function noMorePhotos(response) {
   if (response.data.totalHits / (pageNum * photosPerPage) < 1 && pageNum > 1) {
     refs.loadMoreBtnEl.classList.add('visually-hidden');
@@ -92,14 +104,4 @@ function noMorePhotos(response) {
 
 function onImageClick(event) {
   event.preventDefault();
-}
-
-function clearGallery() {
-  refs.galleryEl.innerHTML = '';
-}
-
-function onInput() {
-  clearGallery();
-  refs.loadMoreBtnEl.classList.add('visually-hidden');
-  pageNum = 1;
 }
